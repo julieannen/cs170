@@ -20,7 +20,7 @@ int main(){
     PuzzleState initialState;
 
     if(puzzleChoice == 1){
-        //initialState = customPuzzle();
+        initialState = customPuzzle();
     }
     else{
         initialState.puzzle = {{1,2,3}, {0,4,6}, {7,8,5}};
@@ -35,7 +35,7 @@ int main(){
         << "(2) A* with Misplaced Tile" << endl
         << "(3) A* with Manhattan Distance" << endl;
 
-    while(!(cin >> solveChoice) || solveChoice != 1 && solveChoice != 2 && solveChoice != 3){
+    while(!(cin >> solveChoice) || solveChoice != 1 && solveChoice != 2 && solveChoice != 3){       //only allows valid input
         cout << "--Invalid input try again--" << endl
         << "Choice: " ;
         cin.clear();
@@ -45,10 +45,12 @@ int main(){
     if(solveChoice == 1){
         cout << "Running Uniform Cost Search..." << endl;
         //uniformCostSearch(initialState);
-    }else if (solveChoice == 2){
+    }
+    else if (solveChoice == 2){
         cout << "Running A* with Misplaced Tile Heuristic..." << endl;
        //misplacedTile(initialState);
-    }else if (solveChoice == 3){
+    }
+    else if (solveChoice == 3){
         cout << "Running A* with Manhattan Distance Heuristic..." << endl;
         //manhattanDistance(initialState);
     }
