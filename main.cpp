@@ -1,9 +1,7 @@
-
-
 #include <iostream>
 #include <vector>
 #include <limits>
-//#include "puzzle.h"
+#include "puzzle.h"
 using namespace std;
 
 int main(){
@@ -19,12 +17,17 @@ int main(){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 
+    PuzzleState initialState;
+
     if(puzzleChoice == 1){
-        cout << "custom" << endl;
+        //initialState = customPuzzle();
     }
     else{
-        cout << "default" << endl;
+        initialState.puzzle = {{1,2,3}, {0,4,6}, {7,8,5}};
+        initialState.cost = 0;
+        initialState.path = "";
     }
+
     cout << endl;
     
     cout << "Choose solving method: " << endl
@@ -38,5 +41,17 @@ int main(){
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
+
+    if(solveChoice == 1){
+        cout << "Running Uniform Cost Search..." << endl;
+        //uniformCostSearch(initialState);
+    }else if (solveChoice == 2){
+        cout << "Running A* with Misplaced Tile Heuristic..." << endl;
+       //aStarMisplacedTile(initialState);
+    }else if (solveChoice == 3){
+        cout << "Running A* with Manhattan Distance Heuristic..." << endl;
+        //aStarManhattanDistance(initialState);
+    }
+
     return 0;
 }
