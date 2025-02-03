@@ -47,10 +47,10 @@ int main(){
         //uniformCostSearch(initialState);
     }else if (solveChoice == 2){
         cout << "Running A* with Misplaced Tile Heuristic..." << endl;
-       //aStarMisplacedTile(initialState);
+       //misplacedTile(initialState);
     }else if (solveChoice == 3){
         cout << "Running A* with Manhattan Distance Heuristic..." << endl;
-        //aStarManhattanDistance(initialState);
+        //manhattanDistance(initialState);
     }
 
     return 0;
