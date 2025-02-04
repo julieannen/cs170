@@ -42,16 +42,18 @@ int main(){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 
+    cout << endl;
+
     if(solveChoice == 1){
-        cout << "Running Uniform Cost Search..." << endl;
-        //uniformCostSearch(initialState);
+        cout << "Running Uniform Cost Search:" << endl;
+        uniformCostSearch(initialState);
     }
     else if (solveChoice == 2){
-        cout << "Running A* with Misplaced Tile Heuristic..." << endl;
+        cout << "Running A* with Misplaced Tile Heuristic:" << endl;
        //misplacedTile(initialState);
     }
     else if (solveChoice == 3){
-        cout << "Running A* with Manhattan Distance Heuristic..." << endl;
+        cout << "Running A* with Manhattan Distance Heuristic:" << endl;
         //manhattanDistance(initialState);
     }
 

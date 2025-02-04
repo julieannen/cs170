@@ -2,6 +2,8 @@
 #include <iostream>
 #include <limits>
 #include <algorithm>
+#include <queue>
+#include <set>
 using namespace std;
 
 PuzzleState customPuzzle(){ //user built puzzle
@@ -45,7 +47,7 @@ vector<PuzzleState> moves(const PuzzleState& state){
     int blankPositionCol = -1;
 
     for(int i = 0; i < 3; ++i){         //find (i, j) position of blank tile
-        for(int j = 0; i < 3; ++j){
+        for(int j = 0; j < 3; ++j){
             if(state.puzzle[i][j] == 0){
                 blankPositionRow = i;
                 blankPositionCol = j;
@@ -63,16 +65,16 @@ vector<PuzzleState> moves(const PuzzleState& state){
         swap(newState.puzzle[blankPositionRow][blankPositionCol], newState.puzzle[blankPositionRow - 1][blankPositionCol]);
 
         newState.cost++;    //cost updated
-        newState.path += "up";      //tracing updated
+        newState.path += "up ";      //tracing updated
         moves.push_back(newState);      //new state stored in possible states vector
     }
 
-    if(blankPositionCol < 2){       //move down
+    if(blankPositionRow < 2){       //move down
         PuzzleState newState = state;
         swap(newState.puzzle[blankPositionRow][blankPositionCol], newState.puzzle[blankPositionRow + 1][blankPositionCol]);
 
         newState.cost++;    //cost updated
-        newState.path += "up";      //tracing updated
+        newState.path += "down ";      //tracing updated
         moves.push_back(newState);      //new state stored in possible states vector
     }
 
@@ -81,7 +83,7 @@ vector<PuzzleState> moves(const PuzzleState& state){
         swap(newState.puzzle[blankPositionRow][blankPositionCol], newState.puzzle[blankPositionRow][blankPositionCol - 1]);
 
         newState.cost++;    //cost updated
-        newState.path += "up";      //tracing updated
+        newState.path += "left ";      //tracing updated
         moves.push_back(newState);      //new state stored in possible states vector
     }
 
@@ -90,10 +92,44 @@ vector<PuzzleState> moves(const PuzzleState& state){
         swap(newState.puzzle[blankPositionRow][blankPositionCol], newState.puzzle[blankPositionRow][blankPositionCol + 1]);
 
         newState.cost++;    //cost updated
-        newState.path += "up";      //tracing updated
+        newState.path += "right ";      //tracing updated
         moves.push_back(newState);      //new state stored in possible states vector
     }
     return moves;
+}
+
+void uniformCostSearch(const PuzzleState& initialState){       //option 1 selected
+    priority_queue<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    set<PuzzleState> visited;           //track visited avoid repeat
+
+    storedStates.push(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    visited.insert(initialState);       //initialize queue with start state
+
+    while(!storedStates.empty()){       //loop do
+        PuzzleState curr = storedStates.top();        // if EMPTY(nodes) then return "failure"
+        storedStates.pop();
+
+        if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
+            cout << "Solution found with cost: " << curr.cost << endl;
+            cout << "Path: " << curr.path << endl;
+            return; 
+        }
+
+        vector<PuzzleState> Moves = moves(curr);        // EXPAND(node, problem.OPERATORS)
+
+        for (size_t i = 0; i < Moves.size(); ++i){      //find cost of every move
+            PuzzleState move = Moves[i];
+
+            if (visited.find(move) == visited.end()){       //add to storedStates in not visited yet
+                move.totalCost = move.cost;     //total cost updated
+                storedStates.push(move);
+                visited.insert(move);
+            }
+        }
+
+    }
+    cout << "No solution found." << endl;
+ 
 }
 
 
@@ -107,11 +143,7 @@ vector<PuzzleState> moves(const PuzzleState& state){
 
 
 
-
-
-
-void uniformCostSearch(const PuzzleState& initstate);       //option 1 selected
-void misplacedTile(const PuzzleState& initstate);       //option 2 selected
-int mispplacedTileFind(const vector<vector<int>> puzzle); //find num of misplaced tiles
-void manhattanDistance(const PuzzleState& initstate);       //option 3 selected
-int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
+// void misplacedTile(const PuzzleState& initialState);       //option 2 selected
+// int mispplacedTileFind(const vector<vector<int>> puzzle); //find num of misplaced tiles
+// void manhattanDistance(const PuzzleState& initialState);       //option 3 selected
+// int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
