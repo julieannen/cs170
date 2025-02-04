@@ -143,6 +143,64 @@ void uniformCostSearch(const PuzzleState& initialState){       //option 1 select
  
 }
 
+int mispplacedTileFind(const vector<vector<int>> puzzle){ //find num of misplaced tiles
+    int misplacedAmt = 0;
+
+    for(int i = 0; i < 0; ++i){     //traverse 3x3 grid
+        for(int j = 0; j < 3; ++j){
+            if(puzzle[i][j] != 0 && puzzle[i][j] != GOAL[i][j]){        //ignore blank space and compare curr (i,j) to correct (i,j)
+                misplacedAmt++;     //increase if (i,j) is different than goal(i,j)
+            }
+        }
+    }
+    return misplacedAmt;
+}
+
+void misplacedTile(PuzzleState& initialState){       //option 2 selected
+    vector<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    set<vector<vector<int>>> visited;           //track visited avoid repeat
+    int nodesExpanded = 0; 
+    int maxQueueSize = 0;
+
+    initialState.heuristics = mispplacedTileFind(initialState.puzzle);      //set h(n)
+    initialState.totalCost = initialState.cost + initialState.heuristics;       //f(n) = c(n) + h(n)
+    storedStates.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    visited.insert(initialState.puzzle);       //initialize queue with start state
+
+    while(!storedStates.empty()){
+        PuzzleState curr = storedStates.front();        // if EMPTY(nodes) then return "failure"
+        storedStates.erase(storedStates.begin());
+
+        nodesExpanded++;        //track # of nodes expanded
+
+        if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
+            cout << "Cost: " << curr.cost << endl //depth
+                 << "Path: " << curr.path << endl
+                 << "Nodes Expanded: " << nodesExpanded<< endl
+                 << "Max Queue Size: " << maxQueueSize << endl;
+
+            return; 
+        }
+
+        vector<PuzzleState> Moves = moves(curr);        // EXPAND(node, problem.OPERATORS)
+
+        for (size_t i = 0; i < Moves.size(); ++i){      //find cost of every move
+            PuzzleState move = Moves[i];
+
+            if (visited.find(move.puzzle) == visited.end()){       //add to storedStates in not visited yet
+                move.heuristics = mispplacedTileFind(move.puzzle);     //total cost updated
+                move.totalCost = move.cost + move.heuristics;
+                storedStates.push_back(move);
+                visited.insert(move.puzzle);
+            }
+        }
+
+        sort(storedStates.begin(), storedStates.end());         //order queue
+        maxQueueSize = max(maxQueueSize, static_cast<int>(storedStates.size()));     //queue size updated
+
+    }
+    cout << "No solution found." << endl;
+}
 
 
 
@@ -151,10 +209,5 @@ void uniformCostSearch(const PuzzleState& initialState){       //option 1 select
 
 
 
-
-
-
-// void misplacedTile(const PuzzleState& initialState);       //option 2 selected
-// int mispplacedTileFind(const vector<vector<int>> puzzle); //find num of misplaced tiles
-// void manhattanDistance(const PuzzleState& initialState);       //option 3 selected
 // int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
+// void manhattanDistance(const PuzzleState& initialState);       //option 3 selected

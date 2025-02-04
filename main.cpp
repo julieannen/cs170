@@ -23,7 +23,7 @@ int main(){
         initialState = customPuzzle();
     }
     else{
-        initialState.puzzle = {{1,2,3}, {0,4,6}, {7,8,5}};
+        initialState.puzzle = {{1,2,3}, {5,0,6}, {4,7,8}};
         initialState.cost = 0;
         initialState.path = "";
     }
@@ -50,7 +50,7 @@ int main(){
     }
     else if (solveChoice == 2){
         cout << "Running A* with Misplaced Tile Heuristic:" << endl;
-       //misplacedTile(initialState);
+       misplacedTile(initialState);
     }
     else if (solveChoice == 3){
         cout << "Running A* with Manhattan Distance Heuristic:" << endl;

@@ -30,11 +30,11 @@ vector<PuzzleState> moves(const PuzzleState& state);
 
 void uniformCostSearch(const PuzzleState& initialState);       //option 1 selected
 
-// void misplacedTile(const PuzzleState& initialState);       //option 2 selected
-// int mispplacedTileFind(const vector<vector<int>> puzzle); //find num of misplaced tiles
+int mispplacedTileFind(const vector<vector<int>> puzzle); //find num of misplaced tiles
+void misplacedTile(PuzzleState& initialState);       //option 2 selected
 
-// void manhattanDistance(const PuzzleState& initialState);       //option 3 selected
-// int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
+//int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
+//void manhattanDistance(const PuzzleState& initialState);       //option 3 selected
 
 
 #endif
