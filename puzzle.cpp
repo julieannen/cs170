@@ -99,18 +99,18 @@ vector<PuzzleState> moves(const PuzzleState& state){
 }
 
 void uniformCostSearch(const PuzzleState& initialState){       //option 1 selected
-    priority_queue<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
-    set<PuzzleState> visited;           //track visited avoid repeat
+    vector<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    set<vector<vector<int>>> visited;           //track visited avoid repeat
 
-    storedStates.push(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
-    visited.insert(initialState);       //initialize queue with start state
+    storedStates.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    visited.insert(initialState.puzzle);       //initialize queue with start state
 
     while(!storedStates.empty()){       //loop do
-        PuzzleState curr = storedStates.top();        // if EMPTY(nodes) then return "failure"
-        storedStates.pop();
+        PuzzleState curr = storedStates.front();        // if EMPTY(nodes) then return "failure"
+        storedStates.erase(storedStates.begin());
 
         if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
-            cout << "Solution found with cost: " << curr.cost << endl;
+            cout << "Solution found with cost: " << curr.cost << endl; //depth
             cout << "Path: " << curr.path << endl;
             return; 
         }
@@ -120,10 +120,10 @@ void uniformCostSearch(const PuzzleState& initialState){       //option 1 select
         for (size_t i = 0; i < Moves.size(); ++i){      //find cost of every move
             PuzzleState move = Moves[i];
 
-            if (visited.find(move) == visited.end()){       //add to storedStates in not visited yet
-                move.totalCost = move.cost;     //total cost updated
-                storedStates.push(move);
-                visited.insert(move);
+            if (visited.find(move.puzzle) == visited.end()){       //add to storedStates in not visited yet
+                move.totalCost = curr.totalCost + 1;     //total cost updated
+                storedStates.push_back(move);
+                visited.insert(move.puzzle);
             }
         }
 
