@@ -101,6 +101,8 @@ vector<PuzzleState> moves(const PuzzleState& state){
 void uniformCostSearch(const PuzzleState& initialState){       //option 1 selected
     vector<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
     set<vector<vector<int>>> visited;           //track visited avoid repeat
+    int nodesExpanded = 0; 
+    int maxQueueSize = 0;
 
     storedStates.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
     visited.insert(initialState.puzzle);       //initialize queue with start state
@@ -109,9 +111,14 @@ void uniformCostSearch(const PuzzleState& initialState){       //option 1 select
         PuzzleState curr = storedStates.front();        // if EMPTY(nodes) then return "failure"
         storedStates.erase(storedStates.begin());
 
+        nodesExpanded++;        //track # of nodes expanded
+
         if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
-            cout << "Solution found with cost: " << curr.cost << endl; //depth
-            cout << "Path: " << curr.path << endl;
+            cout << "Cost: " << curr.cost << endl //depth
+                 << "Path: " << curr.path << endl
+                 << "Nodes Expanded: " << nodesExpanded << endl
+                 << "Max Queue Size: " << maxQueueSize << endl;
+
             return; 
         }
 
@@ -121,11 +128,15 @@ void uniformCostSearch(const PuzzleState& initialState){       //option 1 select
             PuzzleState move = Moves[i];
 
             if (visited.find(move.puzzle) == visited.end()){       //add to storedStates in not visited yet
-                move.totalCost = curr.totalCost + 1;     //total cost updated
+                move.cost = curr.cost + 1;     //total cost updated
+                move.totalCost = move.cost;
                 storedStates.push_back(move);
                 visited.insert(move.puzzle);
             }
         }
+
+        sort(storedStates.begin(), storedStates.end());         //order queue
+        maxQueueSize = max(maxQueueSize, static_cast<int>(storedStates.size()));     //queue size updated
 
     }
     cout << "No solution found." << endl;

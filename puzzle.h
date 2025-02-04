@@ -16,7 +16,7 @@ struct PuzzleState{
     string path;
 
     bool operator<(const PuzzleState& other) const{
-        return puzzle < other.puzzle;                   //compare correct order
+        return totalCost < other.totalCost;                   //compare correct order
     }
 
     bool operator==(const PuzzleState& other) const{
