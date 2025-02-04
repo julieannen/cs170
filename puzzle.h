@@ -25,6 +25,8 @@ struct PuzzleState{
 };
 
 PuzzleState customPuzzle(); //user built puzzle
+bool isGoalState(const PuzzleState& state);     //compare curr state to goal
+vector<PuzzleState> moves(const PuzzleState& state);
 
 void uniformCostSearch(const PuzzleState& initstate);       //option 1 selected
 
@@ -34,8 +36,5 @@ int mispplacedTileFind(const vector<vector<int>> puzzle); //find num of misplace
 void manhattanDistance(const PuzzleState& initstate);       //option 3 selected
 int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
 
-bool isGoalState(const PuzzleState& state);     //compare curr state to goal
-
-vector<PuzzleState> moves(const PuzzleState& state);
 
 #endif
