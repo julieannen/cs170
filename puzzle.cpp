@@ -114,7 +114,7 @@ void uniformCostSearch(const PuzzleState& initialState){       //option 1 select
         nodesExpanded++;        //track # of nodes expanded
 
         if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
-            cout << "Cost: " << curr.cost << endl //depth
+            cout << "Depth: " << curr.cost << endl 
                  << "Path: " << curr.path << endl
                  << "Nodes Expanded: " << nodesExpanded << endl
                  << "Max Queue Size: " << maxQueueSize << endl;
@@ -146,7 +146,7 @@ void uniformCostSearch(const PuzzleState& initialState){       //option 1 select
 int mispplacedTileFind(const vector<vector<int>> puzzle){ //find num of misplaced tiles
     int misplacedAmt = 0;
 
-    for(int i = 0; i < 0; ++i){     //traverse 3x3 grid
+    for(int i = 0; i < 3; ++i){     //traverse 3x3 grid
         for(int j = 0; j < 3; ++j){
             if(puzzle[i][j] != 0 && puzzle[i][j] != GOAL[i][j]){        //ignore blank space and compare curr (i,j) to correct (i,j)
                 misplacedAmt++;     //increase if (i,j) is different than goal(i,j)
@@ -174,7 +174,7 @@ void misplacedTile(PuzzleState& initialState){       //option 2 selected
         nodesExpanded++;        //track # of nodes expanded
 
         if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
-            cout << "Cost: " << curr.cost << endl //depth
+            cout << "Depth: " << curr.cost << endl 
                  << "Path: " << curr.path << endl
                  << "Nodes Expanded: " << nodesExpanded<< endl
                  << "Max Queue Size: " << maxQueueSize << endl;
