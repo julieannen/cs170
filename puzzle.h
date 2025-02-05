@@ -34,7 +34,7 @@ int mispplacedTileFind(const vector<vector<int>> puzzle); //find num of misplace
 void misplacedTile(PuzzleState& initialState);       //option 2 selected
 
 int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
-void manhattanDistance(const PuzzleState& initialState);       //option 3 selected
+void manhattanDistance(PuzzleState& initialState);       //option 3 selected
 
 
 #endif

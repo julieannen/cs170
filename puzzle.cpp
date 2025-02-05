@@ -219,7 +219,48 @@ int manhattanDistanceFind(const vector<vector<int>> puzzle){ //calculate manhatt
     return distance;
 }
 
-void manhattanDistance(const PuzzleState& initialState){       //option 3 selected
-    int
+void manhattanDistance(PuzzleState& initialState){       //option 3 selected
+    vector<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    set<vector<vector<int>>> visited;           //track visited avoid repeat
+    int nodesExpanded = 0; 
+    int maxQueueSize = 0;
 
+    initialState.heuristics = manhattanDistanceFind(initialState.puzzle);      //set h(n)
+    initialState.totalCost = initialState.cost + initialState.heuristics;       //f(n) = c(n) + h(n)
+    storedStates.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    visited.insert(initialState.puzzle);       //initialize queue with start state
+
+    while(!storedStates.empty()){
+        PuzzleState curr = storedStates.front();        // if EMPTY(nodes) then return "failure"
+        storedStates.erase(storedStates.begin());
+
+        nodesExpanded++;        //track # of nodes expanded
+
+        if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
+            cout << "Depth: " << curr.cost << endl 
+                 << "Path: " << curr.path << endl
+                 << "Nodes Expanded: " << nodesExpanded<< endl
+                 << "Max Queue Size: " << maxQueueSize << endl;
+
+            return; 
+        }
+
+        vector<PuzzleState> Moves = moves(curr);        // EXPAND(node, problem.OPERATORS)
+
+        for (size_t i = 0; i < Moves.size(); ++i){      //find cost of every move
+            PuzzleState move = Moves[i];
+
+            if (visited.find(move.puzzle) == visited.end()){       //add to storedStates in not visited yet
+                move.heuristics = manhattanDistanceFind(move.puzzle);     //total cost updated
+                move.totalCost = move.cost + move.heuristics;
+                storedStates.push_back(move);
+                visited.insert(move.puzzle);
+            }
+        }
+
+        sort(storedStates.begin(), storedStates.end());         //order queue
+        maxQueueSize = max(maxQueueSize, static_cast<int>(storedStates.size()));     //queue size updated
+
+    }
+    cout << "No solution found." << endl;
 }
