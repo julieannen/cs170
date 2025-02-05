@@ -54,7 +54,7 @@ int main(){
     }
     else if (solveChoice == 3){
         cout << "Running A* with Manhattan Distance Heuristic:" << endl;
-        //manhattanDistance(initialState);
+        manhattanDistance(initialState);
     }
 
     return 0;

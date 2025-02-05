@@ -202,12 +202,24 @@ void misplacedTile(PuzzleState& initialState){       //option 2 selected
     cout << "No solution found." << endl;
 }
 
+int manhattanDistanceFind(const vector<vector<int>> puzzle){ //calculate manhattan distance
+    int distance = 0;
 
+    for(int i = 0; i < 3; ++i){
+        for(int j = 0; j < 3; ++j){
+            int value = puzzle[i][j];
 
+            if(puzzle[i][j] != 0){      //ignores blank tile
+                distance += abs(i - ((value - 1) / 3)); //find the goal row index for the number at (i,j) and calc distance from curr row index 
+                distance += abs(j - ((value - 1) % 3)); //find the goal col index for the number at (i,j) and calc distance form curr col index
+            }
 
+        }
+    }
+    return distance;
+}
 
+void manhattanDistance(const PuzzleState& initialState){       //option 3 selected
+    int
 
-
-
-// int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
-// void manhattanDistance(const PuzzleState& initialState);       //option 3 selected
+}

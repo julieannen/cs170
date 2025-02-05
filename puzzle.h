@@ -33,8 +33,8 @@ void uniformCostSearch(const PuzzleState& initialState);       //option 1 select
 int mispplacedTileFind(const vector<vector<int>> puzzle); //find num of misplaced tiles
 void misplacedTile(PuzzleState& initialState);       //option 2 selected
 
-//int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
-//void manhattanDistance(const PuzzleState& initialState);       //option 3 selected
+int manhattanDistanceFind(const vector<vector<int>> puzzle); //calculate manhattan distance
+void manhattanDistance(const PuzzleState& initialState);       //option 3 selected
 
 
 #endif
