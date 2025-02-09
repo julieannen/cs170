@@ -25,8 +25,8 @@ struct PuzzleState{
 };
 
 PuzzleState customPuzzle(); //user built puzzle
-bool isGoalState(const PuzzleState& state);     //compare curr state to goal
-vector<PuzzleState> moves(const PuzzleState& state);
+bool GOALTEST(const PuzzleState& state);     //compare curr state to goal
+vector<PuzzleState> EXPAND(const PuzzleState& state);
 
 void uniformCostSearch(const PuzzleState& initialState);       //option 1 selected
 

@@ -36,7 +36,7 @@ PuzzleState customPuzzle(){ //user built puzzle
     return state;
 }
 
-bool isGoalState(const PuzzleState& state){     //check if goal state reached
+bool GOALTEST(const PuzzleState& state){     //check if goal state reached
     return state.puzzle == GOAL;
 }
 
@@ -99,44 +99,44 @@ vector<PuzzleState> moves(const PuzzleState& state){
 }
 
 void uniformCostSearch(const PuzzleState& initialState){       //option 1 selected
-    vector<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    vector<PuzzleState> nodes;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
     set<vector<vector<int>>> visited;           //track visited avoid repeat
     int nodesExpanded = 0; 
     int maxQueueSize = 0;
 
-    storedStates.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    nodes.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
     visited.insert(initialState.puzzle);       //initialize queue with start state
 
-    while(!storedStates.empty()){       //loop do
-        PuzzleState curr = storedStates.front();        // if EMPTY(nodes) then return "failure"
-        storedStates.erase(storedStates.begin());
+    while(!nodes.empty()){       //loop do,, if EMPTY(nodes) then return "failure"
+        PuzzleState node = nodes.front();        
+        nodes.erase(nodes.begin());     //node = REMOVEFRONT(nodes)
 
         nodesExpanded++;        //track # of nodes expanded
 
-        if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
-            cout << "Depth: " << curr.cost << endl 
-                 << "Path: " << curr.path << endl
+        if(GOALTEST(node)){      // if problem.GOALTEST(node.STATE) succeeds then return node
+            cout << "Depth: " << node.cost << endl 
+                 << "Path: " << node.path << endl
                  << "Nodes Expanded: " << nodesExpanded << endl
                  << "Max Queue Size: " << maxQueueSize << endl;
 
             return; 
         }
 
-        vector<PuzzleState> Moves = moves(curr);        // EXPAND(node, problem.OPERATORS)
+        vector<PuzzleState> Moves = EXPAND(node);        // EXPAND(node, problem.OPERATORS)
 
         for (size_t i = 0; i < Moves.size(); ++i){      //find cost of every move
             PuzzleState move = Moves[i];
 
-            if (visited.find(move.puzzle) == visited.end()){       //add to storedStates in not visited yet
-                move.cost = curr.cost + 1;     //total cost updated
+            if (visited.find(move.puzzle) == visited.end()){       //add to nodes in not visited yet
+                move.cost = node.cost + 1;     //total cost updated
                 move.totalCost = move.cost;
-                storedStates.push_back(move);
+                nodes.push_back(move);
                 visited.insert(move.puzzle);
             }
         }
 
-        sort(storedStates.begin(), storedStates.end());         //order queue
-        maxQueueSize = max(maxQueueSize, static_cast<int>(storedStates.size()));     //queue size updated
+        sort(nodes.begin(), nodes.end());         //order queue
+        maxQueueSize = max(maxQueueSize, static_cast<int>(nodes.size()));     //queue size updated
 
     }
     cout << "No solution found." << endl;
@@ -148,7 +148,7 @@ int mispplacedTileFind(const vector<vector<int>> puzzle){ //find num of misplace
 
     for(int i = 0; i < 3; ++i){     //traverse 3x3 grid
         for(int j = 0; j < 3; ++j){
-            if(puzzle[i][j] != 0 && puzzle[i][j] != GOAL[i][j]){        //ignore blank space and compare curr (i,j) to correct (i,j)
+            if(puzzle[i][j] != 0 && puzzle[i][j] != GOAL[i][j]){        //ignore blank space and compare node (i,j) to correct (i,j)
                 misplacedAmt++;     //increase if (i,j) is different than goal(i,j)
             }
         }
@@ -157,46 +157,46 @@ int mispplacedTileFind(const vector<vector<int>> puzzle){ //find num of misplace
 }
 
 void misplacedTile(PuzzleState& initialState){       //option 2 selected
-    vector<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    vector<PuzzleState> nodes;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
     set<vector<vector<int>>> visited;           //track visited avoid repeat
     int nodesExpanded = 0; 
     int maxQueueSize = 0;
 
     initialState.heuristics = mispplacedTileFind(initialState.puzzle);      //set h(n)
     initialState.totalCost = initialState.cost + initialState.heuristics;       //f(n) = c(n) + h(n)
-    storedStates.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    nodes.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
     visited.insert(initialState.puzzle);       //initialize queue with start state
 
-    while(!storedStates.empty()){
-        PuzzleState curr = storedStates.front();        // if EMPTY(nodes) then return "failure"
-        storedStates.erase(storedStates.begin());
+    while(!nodes.empty()){
+        PuzzleState node = nodes.front();        // if EMPTY(nodes) then return "failure"
+        nodes.erase(nodes.begin());     //node = REMOVEFRONT(nodes)
 
         nodesExpanded++;        //track # of nodes expanded
 
-        if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
-            cout << "Depth: " << curr.cost << endl 
-                 << "Path: " << curr.path << endl
+        if(GOALTEST(node)){      // if problem.GOALTEST(node.STATE) succeeds then return node
+            cout << "Depth: " << node.cost << endl 
+                 << "Path: " << node.path << endl
                  << "Nodes Expanded: " << nodesExpanded<< endl
                  << "Max Queue Size: " << maxQueueSize << endl;
 
             return; 
         }
 
-        vector<PuzzleState> Moves = moves(curr);        // EXPAND(node, problem.OPERATORS)
+        vector<PuzzleState> Moves = EXPAND(node);        // EXPAND(node, problem.OPERATORS)
 
         for (size_t i = 0; i < Moves.size(); ++i){      //find cost of every move
             PuzzleState move = Moves[i];
 
-            if (visited.find(move.puzzle) == visited.end()){       //add to storedStates in not visited yet
+            if (visited.find(move.puzzle) == visited.end()){       //add to nodes in not visited yet
                 move.heuristics = mispplacedTileFind(move.puzzle);     //total cost updated
                 move.totalCost = move.cost + move.heuristics;
-                storedStates.push_back(move);
+                nodes.push_back(move);
                 visited.insert(move.puzzle);
             }
         }
 
-        sort(storedStates.begin(), storedStates.end());         //order queue
-        maxQueueSize = max(maxQueueSize, static_cast<int>(storedStates.size()));     //queue size updated
+        sort(nodes.begin(), nodes.end());         //order queue
+        maxQueueSize = max(maxQueueSize, static_cast<int>(nodes.size()));     //queue size updated
 
     }
     cout << "No solution found." << endl;
@@ -210,8 +210,8 @@ int manhattanDistanceFind(const vector<vector<int>> puzzle){ //calculate manhatt
             int value = puzzle[i][j];
 
             if(puzzle[i][j] != 0){      //ignores blank tile
-                distance += abs(i - ((value - 1) / 3)); //find the goal row index for the number at (i,j) and calc distance from curr row index 
-                distance += abs(j - ((value - 1) % 3)); //find the goal col index for the number at (i,j) and calc distance form curr col index
+                distance += abs(i - ((value - 1) / 3)); //find the goal row index for the number at (i,j) and calc distance from node row index 
+                distance += abs(j - ((value - 1) % 3)); //find the goal col index for the number at (i,j) and calc distance form node col index
             }
 
         }
@@ -220,47 +220,47 @@ int manhattanDistanceFind(const vector<vector<int>> puzzle){ //calculate manhatt
 }
 
 void manhattanDistance(PuzzleState& initialState){       //option 3 selected
-    vector<PuzzleState> storedStates;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    vector<PuzzleState> nodes;        // nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
     set<vector<vector<int>>> visited;           //track visited avoid repeat
     int nodesExpanded = 0; 
     int maxQueueSize = 0;
 
     initialState.heuristics = manhattanDistanceFind(initialState.puzzle);      //set h(n)
     initialState.totalCost = initialState.cost + initialState.heuristics;       //f(n) = c(n) + h(n)
-    storedStates.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
+    nodes.push_back(initialState);        //MAKE-QUEUE(MAKE-NODE(problem.INITIAL-STATE))
     visited.insert(initialState.puzzle);       //initialize queue with start state
 
-    while(!storedStates.empty()){
-        PuzzleState curr = storedStates.front();        // if EMPTY(nodes) then return "failure"
-        storedStates.erase(storedStates.begin());
+    while(!nodes.empty()){
+        PuzzleState node = nodes.front();        // if EMPTY(nodes) then return "failure"
+        nodes.erase(nodes.begin());     //node = REMOVEFRONT(nodes)
 
         nodesExpanded++;        //track # of nodes expanded
 
-        if(isGoalState(curr)){      // if problem.GOAL-TEST(node.STATE) succeeds then return node
-            cout << "Depth: " << curr.cost << endl 
-                 << "Path: " << curr.path << endl
+        if(GOALTEST(node)){      // if problem.GOALTEST(node.STATE) succeeds then return node
+            cout << "Depth: " << node.cost << endl 
+                 << "Path: " << node.path << endl
                  << "Nodes Expanded: " << nodesExpanded<< endl
                  << "Max Queue Size: " << maxQueueSize << endl;
 
             return; 
         }
 
-        vector<PuzzleState> Moves = moves(curr);        // EXPAND(node, problem.OPERATORS)
+        vector<PuzzleState> Moves = EXPAND(node);        // EXPAND(node, problem.OPERATORS)
 
         for (size_t i = 0; i < Moves.size(); ++i){      //find cost of every move
             PuzzleState move = Moves[i];
 
-            if (visited.find(move.puzzle) == visited.end()){       //add to storedStates in not visited yet
+            if (visited.find(move.puzzle) == visited.end()){       //add to nodes in not visited yet
                 move.heuristics = manhattanDistanceFind(move.puzzle);     //total cost updated
                 move.totalCost = move.cost + move.heuristics;
-                storedStates.push_back(move);
+                nodes.push_back(move);
                 visited.insert(move.puzzle);
             }
         }
 
-        sort(storedStates.begin(), storedStates.end());         //order queue
-        maxQueueSize = max(maxQueueSize, static_cast<int>(storedStates.size()));     //queue size updated
+        sort(nodes.begin(), nodes.end());         //order queue
+        maxQueueSize = max(maxQueueSize, static_cast<int>(nodes.size()));     //queue size updated
 
     }
-    cout << "No solution found." << endl;
+    cout << "No solution found." << endl;       //if EMPTY(nodes) then return "failure"
 }
