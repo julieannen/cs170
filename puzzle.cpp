@@ -40,7 +40,7 @@ bool GOALTEST(const PuzzleState& state){     //check if goal state reached
     return state.puzzle == GOAL;
 }
 
-vector<PuzzleState> moves(const PuzzleState& state){
+vector<PuzzleState> EXPAND(const PuzzleState& state){
     vector<PuzzleState> moves;      //vector contains possible states of the puzzle
 
     int blankPositionRow = -1;
